@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const users = require('./users-model.js');
+const users = require('./auth/models/users-model.js');
 const base64 = require('base-64');
 
 const app = express();
