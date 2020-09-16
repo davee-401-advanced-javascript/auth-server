@@ -21,8 +21,8 @@ app.post('/signup', async (req, res, next) => {
     // Create an object that looks like the data model shape
     let obj = {
       username: req.body.username,
-      password: req.body.password
-    }
+      password: req.body.password,
+    };
 
     // Create a new instance from the schema, using that object
     let record = new users(obj);
@@ -48,9 +48,9 @@ app.post('/signin', basicAuth, async (req, res, next) => {
     // Get the username and password from the user
     // It will be in the headers
     let authorization = req.headers.authorization;
-    let encoded = authorization.split(' ')[1]
+    let encoded = authorization.split(' ')[1];
     let creds = base64.decode(encoded);
-    let [username, password] = creds.split(":");
+    let [username, password] = creds.split(':');
 
     // Get user instance from the model, if we can.
     let userRecord = await users.validateBasic(username, password);
@@ -74,9 +74,9 @@ app.use('*', (req, res, next) => {
 // Error Handler - last express route!
 app.use((err, req, res, next) => {
   res.status(500).send(err);
-})
+});
 
 module.exports = {
   app,
-  start: (port) => app.listen(port, console.log('up on', port))
-}
+  start: (port) => app.listen(port, console.log('up on', port)),
+};

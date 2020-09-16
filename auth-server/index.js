@@ -8,8 +8,8 @@ let server = require('./server.js');
 // connect to mongo
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
 });
 
 // start the server
-server.start(process.env.PORT)
+server.start(process.env.PORT);
