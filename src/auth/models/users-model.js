@@ -21,7 +21,6 @@ users.methods.generateToken = function () {
 users.statics.validateBasic = async function (username, password) {
 
   let user = await this.findOne({ username: username });
-
   let isValid = await bcrypt.compare(password, user.password);
 
   if (isValid) { return user; }
