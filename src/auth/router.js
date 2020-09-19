@@ -8,7 +8,7 @@ const basicAuth = require('./middleware/basic.js');
 
 router.post('/signup', handleSignUp);
 router.post('/signin', basicAuth, handleSignIn);
-router.get('/users', getUsers);
+router.get('/users', basicAuth, getUsers);
 
 async function handleSignUp(req, res, next){
   try {
@@ -20,7 +20,11 @@ async function handleSignUp(req, res, next){
     let newUser = await record.save();
     let token = record.generateToken();
 
-    res.status(201).send(token);
+    let output = {
+      token: token,
+      user: newUser,
+    };
+    res.status(201).send(output);
   } catch (e) {
     next(e.message);
   }
