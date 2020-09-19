@@ -14,7 +14,15 @@ users.pre('save', async function () {
 });
 
 users.methods.generateToken = function () {
-  let token = jwt.sign({ username: this.username }, process.env.SECRET);
+  let tokenObj = {
+    username: this.username,
+  };
+
+  let options = {
+    expiresIn: 120,
+  };
+
+  let token = jwt.sign(tokenObj, process.env.SECRET, options);
   return token;
 };
 

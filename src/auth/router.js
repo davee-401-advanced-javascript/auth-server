@@ -5,10 +5,11 @@ const router = express.Router();
 
 const userModel = require('./models/users-model.js');
 const basicAuth = require('./middleware/basic.js');
+const bearerAuth = require('./middleware/bearer.js');
 
 router.post('/signup', handleSignUp);
 router.post('/signin', basicAuth, handleSignIn);
-router.get('/users', basicAuth, getUsers);
+router.get('/users', bearerAuth, getUsers);
 
 async function handleSignUp(req, res, next){
   try {

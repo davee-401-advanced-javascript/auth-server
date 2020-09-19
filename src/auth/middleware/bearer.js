@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
     let token = req.headers.authorization.split(' ').pop();
     let authenticated = await userModel.authenticateWithToken(token);
     req.user = authenticated;
-    req.token = token;
+    req.token = await authenticated.generateToken(); 
     next();
   } catch(e) {
     console.log('Error from bearer', e);
