@@ -6,10 +6,12 @@ const router = express.Router();
 const userModel = require('./models/users-model.js');
 const basicAuth = require('./middleware/basic.js');
 const bearerAuth = require('./middleware/bearer.js');
+const oauth = require('./middleware/oauth.js');
 
 router.post('/signup', handleSignUp);
 router.post('/signin', basicAuth, handleSignIn);
 router.get('/users', bearerAuth, getUsers);
+router.get('/oauth', oauth, handleOAuthroute );
 
 async function handleSignUp(req, res, next){
   try {
@@ -46,10 +48,15 @@ async function handleSignIn(req, res, next){
 async function getUsers(req, res, next) {
   try {
     let allUsers = await userModel.find({});
+    res.set('auth', req.token);
     res.status(200).send(allUsers);
   } catch(e) {
     next(e);
   }
+}
+
+async function handleOAuthroute(req, res, next) {
+  res.status(200).send('ok');
 }
 
 
