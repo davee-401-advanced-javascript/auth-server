@@ -5,7 +5,7 @@ const app = express();
 
 const notFoundHandler = require('./middleware/404.js');
 const errorHandler = require('./middleware/500.js');
-const authRoutes = require('./auth/router.js');
+const authRoutes = require('./auth/auth-routes.js');
 const extraRoutes = require('./extra-route.js');
 
 app.use(express.json());
