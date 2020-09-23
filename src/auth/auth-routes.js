@@ -49,7 +49,7 @@ async function getUsers(req, res, next) {
   try {
     let allUsers = await userModel.find({});
     res.set('auth', req.token);
-    res.status(200).send(allUsers);
+    res.status(200).json(allUsers);
   } catch(e) {
     next(e);
   }

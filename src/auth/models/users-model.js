@@ -19,7 +19,7 @@ users.methods.generateToken = function () {
   };
 
   let options = {
-    expiresIn: 120,
+    expiresIn: 180,
   };
 
   let token = jwt.sign(tokenObj, process.env.SECRET, options);

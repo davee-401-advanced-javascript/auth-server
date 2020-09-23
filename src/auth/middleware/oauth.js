@@ -8,8 +8,9 @@ const TOKEN_SERVER = process.env.TOKEN_SERVER;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const STATE = process.env.STATE;
 const REMOTE_API = process.env.REMOTE_API;
-module.exports = async (req, res, next) => {
 
+
+module.exports = async (req, res, next) => {
   // Get the code
   let code = req.query.code;
   console.log('(1) CODE:', code);
