@@ -8,6 +8,7 @@ const TOKEN_SERVER = process.env.TOKEN_SERVER;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const STATE = process.env.STATE;
 const REMOTE_API = process.env.REMOTE_API;
+const userModel  = require('../models/users-model.js');
 
 
 module.exports = async (req, res, next) => {
@@ -23,7 +24,8 @@ module.exports = async (req, res, next) => {
   // Connect that with our database
   let localUser = await getLocalUser(remoteUser.login);
   console.log('(4)', localUser);
-
+  req.user = localUser.user;
+  req.token = localUser.token;
   next();
 };
 
@@ -51,7 +53,7 @@ async function getRemoteUser(token) {
   return user;
 }
 
-async function getLocalUser(userId) {
+async function getLocalUser(userLogin) {
 
   // Is this userId in our mongo database?
   // if not, add it
@@ -60,10 +62,36 @@ async function getLocalUser(userId) {
   // users.save()
   // store a hashed Password
 
+  let userInDB = await userModel.findOne({username: userLogin});
+
+  if(!userInDB){
+    let obj = {
+      username: userLogin,
+      password: Math.random(),
+    };
+    let record = new userModel(obj);
+    let newUser = await record.save();
+    let token = record.generateToken();
+    let output = {
+      user: newUser,
+      token: token,
+    };
+    return output;
+  } else {
+    let output = {
+      user: userInDB.username,
+      token: userInDB.generateToken(),
+    };
+    return output;
+  }
+  
+
   // After save, or if you found a user ...
   // Generate a token
   // set req.user to be that user object
   // set req.token to be OUR token
+
+
 
 
 }

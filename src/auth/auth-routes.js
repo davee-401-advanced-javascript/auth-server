@@ -39,6 +39,7 @@ async function handleSignIn(req, res, next){
       token: req.token,
       user: req.user,
     };
+    res.set('auth', req.token);
     res.status(200).json(output);
   } catch(e) {
     next(e.message);
@@ -56,7 +57,11 @@ async function getUsers(req, res, next) {
 }
 
 async function handleOAuthroute(req, res, next) {
-  res.status(200).send('ok');
+  let output = {
+    token: req.token,
+    user: req.user,
+  };
+  res.status(200).json(output);
 }
 
 
