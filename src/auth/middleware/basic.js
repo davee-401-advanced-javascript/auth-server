@@ -13,9 +13,9 @@ module.exports = async (req, res, next) => {
     let userRecord = await userModel.validateBasic(username, password);
     req.token = userRecord.generateToken();
     req.user = userRecord;
-    
+    next();
   } catch (e) {
-    console.log(e);
+    console.log('Error from basic:', e);
     next('Invalid Login');
   }
 }; 

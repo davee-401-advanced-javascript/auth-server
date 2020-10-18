@@ -5,10 +5,13 @@ const router = express.Router();
 
 const userModel = require('./models/users-model.js');
 const basicAuth = require('./middleware/basic.js');
+const bearerAuth = require('./middleware/bearer.js');
+const oauth = require('./middleware/oauth.js');
 
 router.post('/signup', handleSignUp);
 router.post('/signin', basicAuth, handleSignIn);
-router.get('/users', getUsers);
+router.get('/users', bearerAuth, getUsers);
+router.get('/oauth', oauth, handleOAuthroute );
 
 async function handleSignUp(req, res, next){
   try {
@@ -20,7 +23,11 @@ async function handleSignUp(req, res, next){
     let newUser = await record.save();
     let token = record.generateToken();
 
-    res.status(201).send(token);
+    let output = {
+      token: token,
+      user: newUser,
+    };
+    res.status(201).send(output);
   } catch (e) {
     next(e.message);
   }
@@ -32,6 +39,7 @@ async function handleSignIn(req, res, next){
       token: req.token,
       user: req.user,
     };
+    res.set('auth', req.token);
     res.status(200).json(output);
   } catch(e) {
     next(e.message);
@@ -41,10 +49,19 @@ async function handleSignIn(req, res, next){
 async function getUsers(req, res, next) {
   try {
     let allUsers = await userModel.find({});
-    res.status(200).send(allUsers);
+    res.set('auth', req.token);
+    res.status(200).json(allUsers);
   } catch(e) {
     next(e);
   }
+}
+
+async function handleOAuthroute(req, res, next) {
+  let output = {
+    token: req.token,
+    user: req.user,
+  };
+  res.status(200).json(output);
 }
 
 
