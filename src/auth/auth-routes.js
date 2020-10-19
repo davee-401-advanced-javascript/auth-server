@@ -23,6 +23,8 @@ async function handleSignUp(req, res, next){
     let newUser = await record.save();
     let token = record.generateToken();
 
+    res.set('auth', token);
+
     let output = {
       token: token,
       user: newUser,
