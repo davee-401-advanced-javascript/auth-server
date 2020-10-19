@@ -53,15 +53,19 @@ async function getRemoteUser(token) {
   return user;
 }
 
+
+/*****************************************
+Is this userId in our mongo database?
+  If not, add it
+    username: userId
+    password: Math.random()
+    users.save()
+    store a hashed Password
+  After save, or if you found a user ...
+    set req.user to be that user object
+    set req.token to be OUR token (Generate a token)
+******************************************/
 async function getLocalUser(userLogin) {
-
-  // Is this userId in our mongo database?
-  // if not, add it
-  // username: userId
-  // password: Math.random()
-  // users.save()
-  // store a hashed Password
-
   let userInDB = await userModel.findOne({username: userLogin});
 
   if(!userInDB){
@@ -84,14 +88,4 @@ async function getLocalUser(userLogin) {
     };
     return output;
   }
-  
-
-  // After save, or if you found a user ...
-  // Generate a token
-  // set req.user to be that user object
-  // set req.token to be OUR token
-
-
-
-
 }
